@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Fire Donat</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #0b0b0f;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 25px 15px;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 430px;
+    }
+
+    .logo {
+      text-align: center;
+      font-size: 34px;
+      font-weight: bold;
+      margin: 20px 0 8px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #aaa;
+      margin-bottom: 25px;
+    }
+
+    .card {
+      background: #17171d;
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 15px;
+      border: 1px solid #292933;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #ccc;
+    }
+
+    input {
+      width: 100%;
+      padding: 15px;
+      border-radius: 12px;
+      border: 1px solid #333;
+      background: #0e0e12;
+      color: white;
+      font-size: 16px;
+      outline: none;
+      margin-bottom: 18px;
+    }
+
+    .packages {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .package {
+      background: #101014;
+      border: 2px solid #292933;
+      border-radius: 14px;
+      padding: 17px;
+      text-align: center;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .package:hover,
+    .package.active {
+      border-color: #ff8a00;
+      background: #21170d;
+    }
+
+    .diamonds {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    .price {
+      color: #ff9d2e;
+    }
+
+    button {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 13px;
+      background: linear-gradient(90deg, #ff6500, #ffae00);
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+
+    button:active {
+      transform: scale(.98);
+    }
+
+    #result {
+      display: none;
+      margin-top: 18px;
+      padding: 16px;
+      background: #102414;
+      border-radius: 13px;
+      color: #8cff9b;
+      line-height: 1.7;
+    }
+
+    .footer {
+      text-align: center;
+      color: #666;
+      font-size: 13px;
+      margin-top: 25px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <div class="logo">🔥 FREE FIRE</div>
+  <div class="subtitle">Diamond Donat</div>
+
+  <div class="card">
+
+    <label>Player ID</label>
+    <input
+      type="text"
+      id="playerId"
+      placeholder="Masalan: 123456789"
+    >
+
+    <label>Diamond paketini tanlang</label>
+
+    <div class="packages">
+
+      <div class="package" onclick="selectPackage(this, 100, 15000)">
+        <div class="diamonds">💎 100</div>
+        <div class="price">15 000 so'm</div>
+      </div>
+
+      <div class="package" onclick="selectPackage(this, 310, 40000)">
+        <div class="diamonds">💎 310</div>
+        <div class="price">40 000 so'm</div>
+      </div>
+
+      <div class="package" onclick="selectPackage(this, 520, 65000)">
+        <div class="diamonds">💎 520</div>
+        <div class="price">65 000 so'm</div>
+      </div>
+
+      <div class="package" onclick="selectPackage(this, 1060, 125000)">
+        <div class="diamonds">💎 1060</div>
+        <div class="price">125 000 so'm</div>
+      </div>
+
+    </div>
+
+    <button onclick="order()">💳 Donat qilish</button>
+
+    <div id="result"></div>
+
+  </div>
+
+  <div class="footer">
+    Free Fire Donat © 2026
+  </div>
+
+</div>
+
+<script>
+
+let selectedDiamonds = 0;
+let selectedPrice = 0;
+
+function selectPackage(element, diamonds, price) {
+
+  document.querySelectorAll(".package")
+    .forEach(item => item.classList.remove("active"));
+
+  element.classList.add("active");
+
+  selectedDiamonds = diamonds;
+  selectedPrice = price;
+}
+
+function order() {
+
+  const playerId =
+    document.getElementById("playerId").value.trim();
+
+  const result =
+    document.getElementById("result");
+
+  if (!playerId) {
+    alert("Player ID kiriting!");
+    return;
+  }
+
+  if (!selectedDiamonds) {
+    alert("Diamond paketini tanlang!");
+    return;
+  }
+
+  result.style.display = "block";
+
+  result.innerHTML = `
+    ✅ Buyurtma yaratildi!<br><br>
+    🆔 Player ID: <b>${playerId}</b><br>
+    💎 Diamond: <b>${selectedDiamonds}</b><br>
+    💰 Narx: <b>${selectedPrice.toLocaleString()} so'm</b><br><br>
+    ⏳ To'lov tizimi keyingi bosqichda ulanadi.
+  `;
+}
+
+</script>
+
+</body>
+</html>
