@@ -55,11 +55,6 @@
             transition: 0.2s;
         }
 
-        .header span:first-child:active {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        /* Glassmorphism Card */
         .card {
             background: var(--card-bg);
             backdrop-filter: blur(16px);
@@ -177,12 +172,6 @@
             text-align: center;
             cursor: pointer;
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .package:hover {
-            border-color: rgba(59, 130, 246, 0.4);
         }
 
         .package.selected {
@@ -195,7 +184,6 @@
         .package-img {
             font-size: 32px;
             margin-bottom: 8px;
-            filter: drop-shadow(0 4px 8px rgba(59, 130, 246, 0.3));
         }
 
         .package-diamonds {
@@ -229,12 +217,10 @@
             margin-top: 10px;
             transition: all 0.2s;
             box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
-            letter-spacing: 0.5px;
         }
 
         .order-btn:active {
             transform: scale(0.97);
-            box-shadow: 0 2px 10px rgba(59, 130, 246, 0.3);
         }
 
         .result-box {
@@ -253,12 +239,6 @@
         .payment-box {
             display: none;
             margin-top: 15px;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .payment-buttons {
@@ -278,15 +258,8 @@
             cursor: pointer;
             transition: all 0.2s;
             font-size: 14px;
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
         }
 
-        .pay-btn:active {
-            transform: scale(0.96);
-            background: var(--accent-blue);
-        }
-
-        /* Navigatsiya paneli */
         .tab-bar {
             position: fixed;
             bottom: 0;
@@ -309,12 +282,10 @@
             cursor: pointer;
             flex: 1;
             font-weight: 600;
-            transition: 0.2s;
         }
 
         .tab-item.active {
             color: var(--accent-blue);
-            text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
         }
 
         .tab-icon {
@@ -330,7 +301,6 @@
         <span>DukesShop mini ilova</span>
     </div>
 
-    <!-- O'yin ma'lumotlari -->
     <div class="card">
         <div class="game-title-row">
             <div class="game-icon">🔥</div>
@@ -351,7 +321,6 @@
         </div>
     </div>
 
-    <!-- Sotib olish bo'limi -->
     <div class="card">
         <div class="section-title">💎 ALMAZ PAKETINI TANLANG</div>
         
@@ -380,10 +349,8 @@
 
         <button class="order-btn" onclick="order()">Sotib olish</button>
 
-        <!-- Natija va xabarlar chiqadigan joy -->
         <div id="result" class="result-box">Paket va ID raqamini tanlang</div>
 
-        <!-- To'lov usullari bloki -->
         <div id="paymentBox" class="payment-box">
             <div class="payment-buttons">
                 <button class="pay-btn" onclick="pay('Uzcard')">💳 Uzcard</button>
@@ -392,7 +359,6 @@
         </div>
     </div>
 
-    <!-- Pastki navigatsiya -->
     <div class="tab-bar">
         <div class="tab-item active">
             <div class="tab-icon">🏠</div>
