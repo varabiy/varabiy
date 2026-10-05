@@ -1,229 +1,78 @@
-<!DOCTYPE html>
-<html lang="uz">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Game Donat</title>
+<h1>🎮 Game Donat</h1>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<!-- Player ID -->
+<label>Player ID</label>
 
-    body {
-      margin: 0;
-      padding: 20px;
-      font-family: Arial, sans-serif;
-      background: #f3f6fb;
-      color: #222;
-    }
+<input
+  type="text"
+  id="playerId"
+  placeholder="Masalan: 123456789"
+>
 
-    .container {
-      max-width: 500px;
-      margin: 0 auto;
-      background: white;
-      padding: 25px;
-      border-radius: 20px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
-    }
+<!-- Paketlar -->
+<label>Diamond paketini tanlang</label>
 
-    h1 {
-      text-align: center;
-      margin-bottom: 25px;
-    }
+<div class="packages">
 
-    label {
-      display: block;
-      margin-top: 15px;
-      margin-bottom: 8px;
-      font-weight: bold;
-    }
+  <div
+    class="package"
+    onclick="selectPackage(this, 110, 10000)"
+  >
+    <div class="diamonds">💎 110</div>
+    <div class="price">10 000 so'm</div>
+  </div>
 
-    input {
-      width: 100%;
-      padding: 14px;
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      font-size: 16px;
-      outline: none;
-    }
+  <div
+    class="package"
+    onclick="selectPackage(this, 341, 33000)"
+  >
+    <div class="diamonds">💎 341</div>
+    <div class="price">33 000 so'm</div>
+  </div>
 
-    input:focus {
-      border-color: #2196f3;
-    }
+  <div
+    class="package"
+    onclick="selectPackage(this, 572, 50000)"
+  >
+    <div class="diamonds">💎 572</div>
+    <div class="price">50 000 so'm</div>
+  </div>
 
-    .packages {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-top: 12px;
-    }
+  <div
+    class="package"
+    onclick="selectPackage(this, 1166, 99999)"
+  >
+    <div class="diamonds">💎 1166</div>
+    <div class="price">99 999 so'm</div>
+  </div>
 
-    .package {
-      padding: 18px 10px;
-      border: 2px solid #e1e5ea;
-      border-radius: 15px;
-      text-align: center;
-      cursor: pointer;
-      transition: 0.2s;
-      background: white;
-    }
-
-    .package:hover {
-      border-color: #2196f3;
-      transform: translateY(-2px);
-    }
-
-    .package.selected {
-      border-color: #2196f3;
-      background: #eaf5ff;
-    }
-
-    .diamonds {
-      font-size: 20px;
-      font-weight: bold;
-    }
-
-    .price {
-      margin-top: 8px;
-      color: #555;
-    }
-
-    button {
-      width: 100%;
-      margin-top: 20px;
-      padding: 15px;
-      border: none;
-      border-radius: 13px;
-      background: #2196f3;
-      color: white;
-      font-size: 17px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #1976d2;
-    }
-
-    #result {
-      margin-top: 15px;
-      padding: 12px;
-      border-radius: 10px;
-      text-align: center;
-    }
-  </style>
-</head>
-
-<body>
-
-  <div class="container">
-
-    <h1>🎮 Game Donat</h1>
-
-    <label>Player ID</label>
-
-    <input
-      type="text"
-      id="playerId"
-      placeholder="Masalan: 123456789"
-    >
-
-    <label>Diamond paketini tanlang</label>
-
-    <div class="packages">
-
-      <div class="package" onclick="selectPackage(this, 100, 15000)">
-        <div class="diamonds">💎 110</div>
-        <div class="price">10 000 so'm</div>
-      </div>
-
-      <div class="package" onclick="selectPackage(this, 310, 40000)">
-        <div class="diamonds">💎 341</div>
-        <div class="price">33 000 so'm</div>
-      </div>
-
-      <div class="package" onclick="selectPackage(this, 520, 65000)">
-        <div class="diamonds">💎 572</div>
-        <div class="price">50 000 so'm</div>
-      </div>
-
-      <div class="package" onclick="selectPackage(this, 1060, 125000)">
-        <div class="diamonds">💎 1166</div>
-        <div class="price">99 999 so'm</div>
-      </div>
-
-    </div>
-
-<button onclick="order()">💳 Donat qilish</button>
-
-<div id="paymentBox" style="display:none;">
-  <h3>💳 To‘lov usulini tanlang</h3>
-
-  <button onclick="pay('HUMO')">🔵 HUMO</button>
-
-  <button onclick="pay('UZCARD')">🟢 UZCARD</button>
-
-  <div id="result"></div>
 </div>
 
+<!-- Donat -->
+<button onclick="order()">
+  💳 Donat qilish
+</button>
 
-  <script>
+<!-- To‘lov usullari -->
+<div id="paymentBox">
 
-    let selectedPackage = null;
-    let selectedPrice = 0;
+  <h3>💳 To‘lov usulini tanlang</h3>
 
+  <button
+    class="payment-button humo"
+    onclick="pay('HUMO')"
+  >
+    🔵 HUMO
+  </button>
 
-    function selectPackage(element, diamonds, price) {
+  <button
+    class="payment-button uzcard"
+    onclick="pay('UZCARD')"
+  >
+    🟢 UZCARD
+  </button>
 
-      document.querySelectorAll(".package").forEach(function(pkg) {
-        pkg.classList.remove("selected");
-      });
+</div>
 
-      element.classList.add("selected");
-
-      selectedPackage = diamonds;
-      selectedPrice = price;
-
-      document.getElementById("result").innerHTML =
-        "💎 " + diamonds + " diamond tanlandi — " +
-        price.toLocaleString() + " so'm";
-    }
-
-
-    function order() {
-
-      const playerId =
-        document.getElementById("playerId").value.trim();
-
-      if (playerId === "") {
-
-        document.getElementById("result").innerHTML =
-          "❌ Iltimos, ID raqam kiriting!";
-
-        return;
-      }
-
-
-      if (selectedPackage === null) {
-
-        document.getElementById("result").innerHTML =
-          "❌ Iltimos, diamond paketini tanlang!";
-
-        return;
-      }
-
-
-      document.getElementById("result").innerHTML =
-        "✅ Buyurtma tayyor!<br><br>" +
-        "👤 Player ID: " + playerId + "<br>" +
-        "💎 Diamond: " + selectedPackage + "<br>" +
-        "💰 Summa: " +
-        selectedPrice.toLocaleString() + " so'm";
-
-    }
-
-  </script>
-
-</body>
-</html>
+<!-- Natija -->
+<div id="result"></div>
