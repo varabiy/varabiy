@@ -155,9 +155,17 @@
 
     </div>
 
-    <button onclick="order()">💳 Donat qilish</button>
+<button onclick="order()">💳 Donat qilish</button>
 
-    <div id="result"></div>
+<div id="paymentBox" style="display:none;">
+  <h3>💳 To‘lov usulini tanlang</h3>
+
+  <button onclick="pay('HUMO')">🔵 HUMO</button>
+
+  <button onclick="pay('UZCARD')">🟢 UZCARD</button>
+
+  <div id="result"></div>
+</div>
 
   </div>
 
