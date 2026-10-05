@@ -5,59 +5,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mini App Donat</title>
     <style>
-        body { font-family: Arial, sans-serif; padding: 20px; }
-        .package { padding: 10px; margin: 5px; border: 1px solid #ccc; cursor: pointer; display: inline-block; }
-        .package.selected { border-color: blue; background-color: #e6f0ff; }
-        #paymentBox, #checkSection { display: none; margin-top: 15px; }
-        .timer { color: red; font-weight: bold; font-size: 16px; }
+        body { font-family: Arial, sans-serif; padding: 20px; background-color: #f9f9f9; }
+        .package { padding: 15px; margin: 8px 0; border: 2px solid #ccc; cursor: pointer; border-radius: 8px; background: white; text-align: center; font-size: 16px; font-weight: bold; }
+        .package.selected { border-color: #007bff; background-color: #e6f0ff; }
+        #paymentBox, #checkSection { display: none; margin-top: 20px; text-align: center; }
+        .timer { color: red; font-weight: bold; font-size: 18px; }
         .confirm-btn {
             background-color: #28a745;
             color: white;
-            padding: 12px 20px;
+            padding: 14px 24px;
             font-size: 16px;
             cursor: pointer;
             border: none;
-            border-radius: 6px;
-            margin-top: 10px;
+            border-radius: 8px;
+            font-weight: bold;
         }
         .confirm-btn:hover { background-color: #218838; }
+        input[type="text"] { width: 100%; padding: 12px; font-size: 16px; margin-top: 5px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
+        button.action-btn { width: 100%; padding: 12px; background-color: #007bff; color: white; border: none; font-size: 16px; border-radius: 6px; cursor: pointer; font-weight: bold; margin-top: 15px; }
+        .pay-btn { width: 48%; padding: 12px; font-size: 16px; font-weight: bold; cursor: pointer; border-radius: 6px; border: none; background-color: #ffc107; }
     </style>
 </head>
 <body>
 
-    <!-- Misol uchun elementlar -->
-    <h2>Diamond paketini tanlang</h2>
-    <div class="package" onclick="selectPackage(110, 10000, this)">110 Diamond - 10 000 so'm</div>
-    <div class="package" onclick="selectPackage(1166, 99999, this)">1166 Diamond - 99 999 so'm</div>
+    <h2>💎 Diamond paketini tanlang</h2>
+    <div class="package" onclick="selectPackage(110, 10000, this)">110 Diamond — 10 000 so'm</div>
+    <div class="package" onclick="selectPackage(1166, 99999, this)">1166 Diamond — 99 999 so'm</div>
 
-    <br><br>
-    <label>Player ID:</label>
-    <input type="text" id="playerId" placeholder="ID kiriting">
-    <br><br>
+    <br>
+    <label for="playerId"><b>Player ID kiriting:</b></label>
+    <input type="text" id="playerId" placeholder="Masalan: 12345678">
     
-    <button onclick="order()">Donat qilish</button>
+    <button class="action-btn" onclick="order()">Donat qilish</button>
 
-    <!-- To'lov oynasi (tugmalar) -->
+    <!-- To'lov oynasi (HUMO / UZCARD tugmalari) -->
     <div id="paymentBox">
-        <h3>To'lov usulini tanlang</h3>
-        <button onclick="pay('HUMO')">HUMO</button>
-        <button onclick="pay('UZCARD')">UZCARD</button>
+        <h3>To'lov usulini tanlang:</h3>
+        <button class="pay-btn" onclick="pay('HUMO')">💳 HUMO</button>
+        <button class="pay-btn" onclick="pay('UZCARD')">💳 UZCARD</button>
     </div>
 
-    <!-- Chek yuborish / To'lov qildim tugmasi chiqadigan joy -->
+    <!-- Chek yuborish / To'lov qildim tugmasi -->
     <div id="checkSection">
         <button class="confirm-btn" onclick="confirmPayment()">✅ To‘lov qildim</button>
     </div>
 
     <!-- Natijalar chiqadigan joy -->
-    <div id="result" style="margin-top: 20px; font-weight: bold;"></div>
+    <div id="result" style="margin-top: 20px; font-size: 15px; line-height: 1.6;"></div>
 
 <script>
   let selectedPackage = null;
   let selectedPrice = null;
   let timerInterval = null;
 
-  // PAKETNI TANLASH
+  // 1. Paketni tanlash
   function selectPackage(diamonds, price, element) {
     document.querySelectorAll(".package").forEach(function(pkg) {
       pkg.classList.remove("selected");
@@ -74,49 +75,37 @@
     if (timerInterval) clearInterval(timerInterval);
 
     document.getElementById("result").innerHTML =
-      "💎 " + diamonds +
-      " diamond tanlandi<br>" +
-      "💰 " + price.toLocaleString() +
-      " so'm";
+      "<b>Tanlandi:</b> 💎 " + diamonds + " diamond<br>" +
+      "<b>Summa:</b> 💰 " + price.toLocaleString() + " so'm";
   }
 
-  // DONAT QILISH
+  // 2. Donat qilish tugmasi
   function order() {
     const playerId = document.getElementById("playerId").value.trim();
 
-    // ID tekshirish
     if (playerId === "") {
-      document.getElementById("result").innerHTML =
-        "❌ Avval Player ID kiriting!";
+      document.getElementById("result").innerHTML = "<span style='color: red;'>❌ Avval Player ID kiriting!</span>";
       return;
     }
 
-    // PAKET tekshirish
     if (selectedPackage === null) {
-      document.getElementById("result").innerHTML =
-        "❌ Avval diamond paketini tanlang!";
+      document.getElementById("result").innerHTML = "<span style='color: red;'>❌ Avval diamond paketini tanlang!</span>";
       return;
     }
 
-    // TO'LOV OYNASINI OCHISH
     document.getElementById("paymentBox").style.display = "block";
     document.getElementById("checkSection").style.display = "none";
 
     if (timerInterval) clearInterval(timerInterval);
 
     document.getElementById("result").innerHTML =
-      "👤 Player ID: " + playerId +
-      "<br>" +
-      "💎 Diamond: " + selectedPackage +
-      "<br>" +
-      "💰 Summa: " +
-      selectedPrice.toLocaleString() +
-      " so'm" +
-      "<br><br>" +
-      "👇 To‘lov usulini tanlang";
+      "👤 <b>Player ID:</b> " + playerId + "<br>" +
+      "💎 <b>Diamond:</b> " + selectedPackage + "<br>" +
+      "💰 <b>Summa:</b> " + selectedPrice.toLocaleString() + " so'm<br><br>" +
+      "<span style='color: #007bff;'>👇 Pastdan to‘lov usulini tanlang</span>";
   }
 
-  // HUMO / UZCARD TANLASH + TAYMER
+  // 3. Humo yoki Uzcard bosilganda karta raqami va taymer chiqishi
   function pay(method) {
     const playerId = document.getElementById("playerId").value.trim();
 
@@ -127,10 +116,10 @@
       cardNumber = "5614 6835 1437 6425"; // Uzcard raqamingiz
     }
 
-    // "To'lov qildim" tugmasini ko'rsatish
+    // "To'lov qildim" tugmasini chiqarish
     document.getElementById("checkSection").style.display = "block";
 
-    // 30 daqiqalik taymerni boshlash (30 * 60 sekund)
+    // 30 daqiqalik taymer (30 * 60 sekund)
     let timeLeft = 30 * 60; 
 
     if (timerInterval) clearInterval(timerInterval);
@@ -153,36 +142,27 @@
     }, 1000);
 
     document.getElementById("result").innerHTML =
-      "✅ " + method + " tanlandi!" +
-      "<br><br>" +
-      "💳 <b>Karta raqami:</b> <span style='color: green; font-size: 18px;'>" + cardNumber + "</span>" +
-      "<br><br>" +
-      "⏳ To'lov qilish uchun vaqt: <span id='timerDisplay' class='timer'>30:00</span>" +
-      "<br><br>" +
-      "👤 Player ID: " + playerId +
-      "<br>" +
-      "💎 Diamond: " + selectedPackage +
-      "<br>" +
-      "💰 Summa: " +
-      selectedPrice.toLocaleString() +
-      " so'm" +
-      "<br><br>" +
-      "👉 Yuqoridagi kartaga pulni o'tkazing va pastdagi tugmani bosing!";
+      "✅ <b>" + method + " tanlandi!</b><br><br>" +
+      "💳 <b>Karta raqami:</b><br><span style='color: green; font-size: 20px; font-weight: bold;'>" + cardNumber + "</span><br><br>" +
+      "⏳ <b>To'lov qilish uchun vaqt:</b> <span id='timerDisplay' class='timer'>30:00</span><br><br>" +
+      "👤 <b>Player ID:</b> " + playerId + "<br>" +
+      "💎 <b>Diamond:</b> " + selectedPackage + "<br>" +
+      "💰 <b>Summa:</b> " + selectedPrice.toLocaleString() + " so'm<br><br>" +
+      "👉 <i>Yuqoridagi karta raqamiga pulni o'tkazing va pastdagi 'To'lov qildim' tugmasini bosing!</i>";
   }
 
-  // "TO'LOV QILDIM" TUGMASI BOSILGANDA
+  // 4. "To'lov qildim" tugmasi bosilganda
   function confirmPayment() {
-    if (timerInterval) clearInterval(timerInterval); // Taymerni to'xtatish
+    if (timerInterval) clearInterval(timerInterval);
 
     document.getElementById("checkSection").style.display = "none";
     document.getElementById("paymentBox").style.display = "none";
 
     document.getElementById("result").innerHTML =
-      "⏳ <b>Iltimos kuting, to‘lov tekshirilmoqda...</b><br><br>" +
-      "Adminlar tez orada to'lovni tekshirib tasdiqlashadi!";
+      "⏳ <b style='color: #ff8c00; font-size: 18px;'>Iltimos kuting, to‘lov tekshirilmoqda...</b><br><br>" +
+      "Adminlar tez orada o'tkazmani tekshirib, diamondlarni hisobingizga qo'shib berishadi!";
   }
 </script>
 
 </body>
 </html>
-
