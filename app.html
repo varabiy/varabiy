@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Free Fire - Donat Mini App</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --primary-glow: rgba(59, 130, 246, 0.5);
+            --bg-dark: #070913;
+            --card-bg: rgba(23, 26, 38, 0.7);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --accent-blue: #3b82f6;
+            --accent-cyan: #06b6d4;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.1) 0%, transparent 40%);
+            color: #ffffff;
+            margin: 0;
+            padding: 16px;
+            padding-bottom: 100px;
+            min-height: 100vh;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #94a3b8;
+            font-weight: 500;
+        }
+
+        .header span:first-child {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 6px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+            transition: 0.2s;
+        }
+
+        .header span:first-child:active {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Glassmorphism Card */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 24px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .game-title-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+
+        .game-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .game-name {
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            background: linear-gradient(to right, #fff, #93c5fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .badge {
+            background: rgba(30, 35, 54, 0.8);
+            color: #93c5fd;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .input-container {
+            margin-top: 10px;
+        }
+
+        .input-label-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #94a3b8;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .input-label-row span:last-child {
+            color: var(--accent-cyan);
+            cursor: pointer;
+        }
+
+        .player-input {
+            width: 100%;
+            background: rgba(10, 13, 22, 0.8);
+            border: 1.5px solid #2a3147;
+            padding: 16px;
+            border-radius: 16px;
+            color: #fff;
+            font-size: 18px;
+            font-weight: 600;
+            outline: none;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .player-input:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.3), inset 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            margin-bottom: 16px;
+            color: #e2e8f0;
+        }
+
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .package {
+            background: rgba(25, 30, 48, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.05);
+            border-radius: 18px;
+            padding: 16px 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .package:hover {
+            border-color: rgba(59, 130, 246, 0.4);
+        }
+
+        .package.selected {
+            border-color: var(--accent-blue);
+            background: rgba(59, 130, 246, 0.12);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .package-img {
+            font-size: 32px;
+            margin-bottom: 8px;
+            filter: drop-shadow(0 4px 8px rgba(59, 130, 246, 0.3));
+        }
+
+        .package-diamonds {
+            font-size: 15px;
+            font-weight: 800;
+            margin-bottom: 6px;
+            color: #fff;
+        }
+
+        .package-price {
+            font-size: 12px;
+            color: #94a3b8;
+            background: rgba(10, 13, 22, 0.6);
+            padding: 5px 10px;
+            border-radius: 8px;
+            display: inline-block;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .order-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: #fff;
+            border: none;
+            padding: 16px;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+            letter-spacing: 0.5px;
+        }
+
+        .order-btn:active {
+            transform: scale(0.97);
+            box-shadow: 0 2px 10px rgba(59, 130, 246, 0.3);
+        }
+
+        .result-box {
+            margin-top: 16px;
+            background: rgba(10, 13, 22, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 16px;
+            border-radius: 14px;
+            font-size: 13px;
+            text-align: center;
+            color: #cbd5e1;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        .payment-box {
+            display: none;
+            margin-top: 15px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .payment-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .pay-btn {
+            background: rgba(30, 35, 54, 0.9);
+            color: #fff;
+            border: 1.5px solid var(--accent-blue);
+            padding: 14px;
+            border-radius: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+        }
+
+        .pay-btn:active {
+            transform: scale(0.96);
+            background: var(--accent-blue);
+        }
+
+        /* Navigatsiya paneli */
+        .tab-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(11, 14, 23, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0 20px 0;
+            z-index: 100;
+        }
+
+        .tab-item {
+            text-align: center;
+            color: #64748b;
+            font-size: 10px;
+            cursor: pointer;
+            flex: 1;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .tab-item.active {
+            color: var(--accent-blue);
+            text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+        }
+
+        .tab-icon {
+            font-size: 22px;
+            margin-bottom: 3px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <span onclick="window.history.back()">← Orqaga</span>
+        <span>DukesShop mini ilova</span>
+    </div>
+
+    <!-- O'yin ma'lumotlari -->
+    <div class="card">
+        <div class="game-title-row">
+            <div class="game-icon">🔥</div>
+            <div class="game-name">FREE FIRE</div>
+        </div>
+        <div class="badges">
+            <div class="badge">⚡ TEZKOR</div>
+            <div class="badge">🛡️ ISHONCHLI</div>
+            <div class="badge">🔑 ID ORQALI</div>
+            <div class="badge">🔥 XIT</div>
+        </div>
+        <div class="input-container">
+            <div class="input-label-row">
+                <span>O'YINCHI ID RAQAMI</span>
+                <span onclick="alert('O\'yin profilingizga kirib, yuqori qismdagi ID raqamingizni nusxalab oling.')">QANDAY TOPISH MUMKIN?</span>
+            </div>
+            <input type="number" id="playerId" class="player-input" placeholder="ID / UID ni kiriting">
+        </div>
+    </div>
+
+    <!-- Sotib olish bo'limi -->
+    <div class="card">
+        <div class="section-title">💎 ALMAZ PAKETINI TANLANG</div>
+        
+        <div class="packages-grid">
+            <div class="package" onclick="selectPackage(this, 110, 10000)">
+                <div class="package-img">💎</div>
+                <div class="package-diamonds">110 Diamonds</div>
+                <div class="package-price">10 000 so'm</div>
+            </div>
+            <div class="package" onclick="selectPackage(this, 341, 33000)">
+                <div class="package-img">💎</div>
+                <div class="package-diamonds">341 Diamonds</div>
+                <div class="package-price">33 000 so'm</div>
+            </div>
+            <div class="package" onclick="selectPackage(this, 572, 50000)">
+                <div class="package-img">💎</div>
+                <div class="package-diamonds">572 Diamonds</div>
+                <div class="package-price">50 000 so'm</div>
+            </div>
+            <div class="package" onclick="selectPackage(this, 1166, 99999)">
+                <div class="package-img">💎</div>
+                <div class="package-diamonds">1166 Diamonds</div>
+                <div class="package-price">99 999 so'm</div>
+            </div>
+        </div>
+
+        <button class="order-btn" onclick="order()">Sotib olish</button>
+
+        <!-- Natija va xabarlar chiqadigan joy -->
+        <div id="result" class="result-box">Paket va ID raqamini tanlang</div>
+
+        <!-- To'lov usullari bloki -->
+        <div id="paymentBox" class="payment-box">
+            <div class="payment-buttons">
+                <button class="pay-btn" onclick="pay('Uzcard')">💳 Uzcard</button>
+                <button class="pay-btn" onclick="pay('Humo')">💳 Humo</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pastki navigatsiya -->
+    <div class="tab-bar">
+        <div class="tab-item active">
+            <div class="tab-icon">🏠</div>
+            <div>Asosiy</div>
+        </div>
+        <div class="tab-item" onclick="alert('Savat hozircha bo\'sh')">
+            <div class="tab-icon">🛒</div>
+            <div>Savat</div>
+        </div>
+        <div class="tab-item" onclick="alert('Buyurtmalar tarixi topilmadi')">
+            <div class="tab-icon">🕒</div>
+            <div>Tarix</div>
+        </div>
+        <div class="tab-item" onclick="alert('Profil ma\'lumotlari')">
+            <div class="tab-icon">👤</div>
+            <div>Profil</div>
+        </div>
+    </div>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand();
+
+        let selectedPackage = null;
+        let selectedPrice = 0;
+
+        function selectPackage(element, diamonds, price) {
+            document.querySelectorAll(".package").forEach(function(pkg) {
+                pkg.classList.remove("selected");
+            });
+
+            element.classList.add("selected");
+
+            selectedPackage = diamonds;
+            selectedPrice = price;
+
+            document.getElementById("paymentBox").style.display = "none";
+
+            document.getElementById("result").innerHTML =
+                "💎 " + diamonds +
+                " diamond tanlandi<br>" +
+                "💰 " + price.toLocaleString() +
+                " so'm";
+        }
+
+        function order() {
+            const playerId = document.getElementById("playerId").value.trim();
+
+            if (playerId === "") {
+                document.getElementById("result").innerHTML =
+                    "❌ Avval Player ID kiriting!";
+                return;
+            }
+
+            if (selectedPackage === null) {
+                document.getElementById("result").innerHTML =
+                    "❌ Avval diamond paketini tanlang!";
+                return;
+            }
+
+            document.getElementById("paymentBox").style.display = "block";
+
+            document.getElementById("result").innerHTML =
+                "👤 Player ID: " + playerId +
+                "<br>" +
+                "💎 Diamond: " + selectedPackage +
+                "<br>" +
+                "💰 Summa: " +
+                selectedPrice.toLocaleString() +
+                " so'm" +
+                "<br><br>" +
+                "👇 To‘lov usulini tanlang";
+        }
+
+        function pay(method) {
+            const playerId = document.getElementById("playerId").value.trim();
+
+            document.getElementById("result").innerHTML =
+                "✅ " + method + " tanlandi!" +
+                "<br><br>" +
+                "👤 Player ID: " + playerId +
+                "<br>" +
+                "💎 Diamond: " + selectedPackage +
+                "<br>" +
+                "💰 Summa: " +
+                selectedPrice.toLocaleString() +
+                " so'm" +
+                "<br><br>" +
+                "⏳ To‘lov tizimi tayyorlanmoqda...";
+        }
+    </script>
+</body>
+</html>
